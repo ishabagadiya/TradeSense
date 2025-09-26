@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html,
+body {
+  min-height: 100%;
+  overflow-y: auto;
+}
+
+/* For Webkit browsers (Chrome, Safari, newer versions of Opera) */
+::-webkit-scrollbar {
+  width: 8px; /* width of vertical scrollbar */
+  height: 8px; /* height of horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a; /* dark track color */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(90, 192, 251); /* blue thumb color to match your theme */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(90, 192, 251); /* darker blue on hover */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(90, 192, 251) #1a1a1a; /* thumb and track color */
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.animate-blink {
+  animation: blink 1s infinite;
+}
