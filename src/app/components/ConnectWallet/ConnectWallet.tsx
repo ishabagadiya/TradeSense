@@ -123,7 +123,7 @@ export function ConnectWallet() {
           whileTap={{ scale: 0.95 }}
           onClick={handleLogin}
           className="flex items-center justify-center 
-            bg-gradient-to-br from-blue-500 to-[#4e72b1]
+            bg-green-500
             text-white p-3 sm:px-6 sm:py-3 rounded-full 
             shadow-lg hover:shadow-xl 
             transition-all duration-300 
@@ -140,18 +140,18 @@ export function ConnectWallet() {
             whileTap={{ scale: 0.97 }}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="flex items-center 
-              bg-gradient-to-br from-blue-50 to-blue-100 
-              text-blue-800 px-4 py-2 rounded-full 
+              bg-gradient-to-br from-green-50 to-purple-100 
+              text-green-800 px-4 py-2 rounded-full 
               shadow-md hover:shadow-lg 
               hover:rounded-full
               transition-all duration-300 
               group relative"
           >
-            <BiSolidWallet className="mr-2 size-6 text-blue-600 group-hover:rotate-6 transition-transform" />
+            <BiSolidWallet className="mr-2 size-6 text-green-600 group-hover:rotate-6 transition-transform" />
             <span className="font-medium">
               {displayAddress && truncateAddress(displayAddress)}
             </span>
-            <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity hover:rounded-full"></div>
+            <div className="absolute inset-0 bg-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity hover:rounded-full"></div>
           </motion.button>
 
           <AnimatePresence>
@@ -161,12 +161,12 @@ export function ConnectWallet() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 className="absolute right-0 mt-2 w-64 bg-white 
-                  rounded-xl shadow-2xl ring-2 ring-blue-100 
+                  rounded-xl shadow-2xl ring-2 ring-green-100 
                   overflow-hidden z-50"
               >
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4">
-                  <p className="text-sm text-gray-600">Connected as:</p>
-                  <p className="font-bold text-blue-800 truncate">
+                <div className="bg-gradient-to-r from-green-50 to-purple-50 p-4">
+                  <p className="text-sm text-gray-600">Connected Address:</p>
+                  <p className="font-bold text-green-800 truncate">
                     {user?.google?.email ||
                       user?.farcaster?.displayName ||
                       ensName ||
@@ -174,20 +174,20 @@ export function ConnectWallet() {
                   </p>
                 </div>
 
-                <div className="divide-y divide-blue-100">
+                <div className="divide-y divide-green-100">
                   {displayAddress && (
                     <button
                       onClick={handleCopyAddress}
                       className="w-full flex items-center justify-between 
                         px-4 py-3 text-sm text-gray-700 
-                        hover:bg-blue-50 transition-colors 
+                        hover:bg-green-50 transition-colors 
                         group relative"
                     >
                       <div className="flex items-center">
                         {copiedAddress ? (
                           <CheckIcon className="mr-2 size-5 text-green-500" />
                         ) : (
-                          <FiCopy className="mr-2 size-5 text-blue-500" />
+                          <FiCopy className="mr-2 size-5 text-green-500" />
                         )}
                         {copiedAddress ? "Copied!" : "Copy Address"}
                       </div>

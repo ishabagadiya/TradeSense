@@ -6,6 +6,8 @@ import TokenSelector from "./components/TokenSelector";
 import PythDataDisplay from "./components/PythDataDisplay";
 import SignalHistory from "./components/SignalHistory";
 import { Brain, Zap, Database, TrendingUp, Sparkles, ChevronRight } from "lucide-react";
+import MainPage from "./components/MainPage";
+import Image from "next/image";
 
 export default function Home() {
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
@@ -20,54 +22,57 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen flex flex-col bg-black max-w-7xl mx-auto">
       <MobileResponsiveMessage />
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-7xl mx-auto px-4 py-20 sm:py-24">
-          <div className="text-center space-y-8">
-            <div className="flex justify-center">
-              <div className="p-4 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20">
-                <Brain className="w-16 h-16 text-white" />
+      <section className="relative bg-black text-white w-full h-[400px] overflow-hidden flex items-center justify-center mt-[100px]">
+        {/* Background Grid Image */}
+        <Image 
+          src="/assets/bggrid.png" 
+          alt="Background Grid" 
+          width={100}
+          height={300}
+          className="absolute w-auto h-[600px] z-30 left-0 -top-10"
+        />
+        
+        <div className="relative w-full px-4 h-full flex items-end justify-center z-10">
+          <div className="w-full h-full bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 shadow-sm hover:shadow-lg relative overflow-hidden group text-center bg-checkered flex flex-col items-end justify-center">            
+            <div className="relative z-10 space-y-8 flex flex-col items-end justify-center">
+              {/* Main Content */}
+              <div className="space-y-6">
+                <h1 className="text-4xl sm:text-8xl font-bold text-right bg-gradient-to-br from-green-300  to-white bg-clip-text text-transparent">
+                  TradeSense
+                </h1>
+                <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                  AI-powered trading signals with blockchain transparency
+                </p>
               </div>
-            </div>
-            
-            <div className="space-y-4">
-              <h1 className="text-5xl sm:text-7xl font-bold bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                TradeSense
-              </h1>
-              <p className="text-xl sm:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-                AI-Powered Trading Signals stored immutably on 0G Newton Testnet
-              </p>
-            </div>
 
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-                <Zap className="w-4 h-4" />
-                <span>Real-time AI Analysis</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-                <Database className="w-4 h-4" />
-                <span>0G Newton Testnet Storage</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-                <TrendingUp className="w-4 h-4" />
-                <span>Pyth Network Data</span>
+              {/* Key Features */}
+              <div className="flex flex-wrap justify-end gap-6 text-xs">
+                <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-full px-3 py-1.5 hover:bg-white/10 transition-all duration-300">
+                  <Zap className="w-3 h-3 text-white" />
+                  <span className="text-white font-medium">Real-time Analysis</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-full px-3 py-1.5 hover:bg-white/10 transition-all duration-300">
+                  <Database className="w-3 h-3 text-white" />
+                  <span className="text-white font-medium">0G Storage</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm rounded-full px-3 py-1.5 hover:bg-white/10 transition-all duration-300">
+                  <TrendingUp className="w-3 h-3 text-white" />
+                  <span className="text-white font-medium">Pyth Data</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        
-        {/* Animated background elements */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </section>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-12 space-y-16">
         
+        <MainPage />
         {/* Token Selection Section */}
         <section className="space-y-8">
           <div className="text-center space-y-4">
@@ -181,7 +186,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-xl font-bold text-gray-800">Real-time Data</h3>
                   <p className="text-gray-600">
-                    Powered by Pyth Network's high-frequency price feeds for accurate and up-to-date market information.
+                    Powered by Pyth Network&apos;s high-frequency price feeds for accurate and up-to-date market information.
                   </p>
                 </div>
               </div>

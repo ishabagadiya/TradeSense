@@ -185,7 +185,7 @@ export function ConnectWallet() {
                 aria-labelledby="options-menu"
               >
                 <div className="px-4 py-2 text-sm text-gray-700">
-                  <p>Connected as:</p>
+                  <p>Connected Address:</p>
                   <p className="font-bold">
                     {user?.google?.email ||
                       user?.farcaster?.displayName ||
