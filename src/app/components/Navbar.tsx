@@ -6,7 +6,7 @@ import { Waves } from "lucide-react";
 import { toast } from "react-toastify";
 
 export function Navbar() {
-  const showComingSoonToast = (e: { preventDefault: () => void; }) => {
+  const showComingSoonToast = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     toast.info("Coming Soon!", {
       position: "top-center",
@@ -28,28 +28,12 @@ export function Navbar() {
           >
             <Waves className="w-8 h-8" />
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-cyan bg-clip-text text-white">
-            TradeSense
+              TradeSense
             </span>
           </Link>
-          
-          <div className="flex items-center space-x-6">
-            <Link
-              href="/features"
-              onClick={showComingSoonToast}
-              className="text-gray-300 hover:text-primary transition-colors font-medium"
-            >
-              Features
-            </Link>
-            <Link
-              href="/faqs"
-              onClick={showComingSoonToast}
-              className="text-gray-300 hover:text-primary transition-colors font-medium"
-            >
-              FAQs
-            </Link>
-            <div className="pl-6 border-l border-blue-100">
-              <ConnectWallet />
-            </div>
+
+          <div className="pl-6 border-l border-blue-100">
+            <ConnectWallet />
           </div>
         </div>
       </div>

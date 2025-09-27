@@ -41,7 +41,6 @@ const privyConfig: PrivyClientConfig = {
   loginMethods: ["wallet", "google", "farcaster", "discord", "github", "email"],
   appearance: {
     showWalletLoginFirst: true,
-    logo: "",
   },
   defaultChain: optimism,
 };
