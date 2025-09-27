@@ -5,7 +5,7 @@ This guide explains how to integrate automatic USDC to token swapping when you r
 ## 🎯 Overview
 
 The integration adds automatic swap functionality to your trading signals:
-- When you get a **BUY** signal, you can instantly swap USDC to the recommended token
+- When you get a **BUY** or **HOLD** signal, you can instantly swap USDC to the recommended token
 - Uses 1inch DEX aggregator for best prices
 - Integrates with your existing wallet connection (Privy + Wagmi)
 - Shows live swap status and transaction links
@@ -16,7 +16,7 @@ The integration adds automatic swap functionality to your trading signals:
 **File:** `src/app/components/TradingSignalDisplayWithSwap.tsx`
 
 This is an enhanced version of your original `TradingSignalDisplay` component that includes:
-- Swap section that appears only for BUY signals
+- Swap section that appears for BUY and HOLD signals
 - USDC amount input
 - One-click swap execution
 - Transaction status tracking
@@ -70,7 +70,7 @@ Make sure your app has the wallet providers properly set up (you already have th
 ### Step 3: Test the Integration
 
 1. **Generate a Trading Signal**: Use your existing flow to generate signals
-2. **Look for BUY signals**: The swap section only appears for BUY signals
+2. **Look for BUY or HOLD signals**: The swap section appears for BUY and HOLD signals
 3. **Connect Wallet**: Make sure your wallet is connected
 4. **Enter Amount**: Input the USDC amount you want to swap
 5. **Execute Swap**: Click the swap button to execute
@@ -220,6 +220,24 @@ Edit `src/lib/token-registry.ts` to add new token mappings:
   name: 'Custom Token'
 }
 ```
+
+### Supported Networks
+
+The integration now supports the following networks:
+
+#### **Real 1inch Swaps Available:**
+- Ethereum Mainnet (Chain ID: 1)
+- Optimism (Chain ID: 10)
+- Arbitrum One (Chain ID: 42161)
+- Base (Chain ID: 8453)
+- Polygon (Chain ID: 137)
+- BNB Smart Chain (Chain ID: 56)
+
+#### **Demo Mode (0G Networks):**
+- 0G Mainnet (Chain ID: 1661)
+- 0G Newton Testnet (Chain ID: 16602)
+
+On 0G networks, the app automatically switches to demo mode with simulated swaps.
 
 ### Changing Default Amounts
 Modify the default swap amount:

@@ -264,21 +264,51 @@ export interface QuoteRequest {
       const url = new URL(`/swap/v6.1/${this.chainId}/approve/allowance`, EXTERNAL_PROXY_URL);
       url.searchParams.append('tokenAddress', tokenAddress);
       url.searchParams.append('walletAddress', walletAddress);
-  
-      console.log('Checking allowance via proxy:', url.toString());
-  
+
+      console.log('🔍 Detailed allowance check parameters:');
+      console.log('📋 Chain ID:', this.chainId);
+      console.log('📋 Token Address:', tokenAddress);
+      console.log('📋 Wallet Address:', walletAddress);
+      console.log('🔗 Full API URL:', url.toString());
+
       const response = await fetch(url.toString(), {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
         },
       });
-  
+
+      console.log('📡 Allowance API Response Status:', response.status, response.statusText);
+
       if (!response.ok) {
-        const errorText = await response.text();
+        let errorText;
+        try {
+          const errorData = await response.json();
+          errorText = JSON.stringify(errorData, null, 2);
+          console.error('❌ Allowance API Error Response:', errorData);
+        } catch {
+          errorText = await response.text();
+          console.error('❌ Allowance API Error Text:', errorText);
+        }
+        
+        console.error('❌ Full allowance error details:', {
+          status: response.status,
+          statusText: response.statusText,
+          url: url.toString(),
+          chainId: this.chainId,
+          tokenAddress,
+          walletAddress,
+          error: errorText
+        });
+        
+        // For 400 errors, provide more specific guidance
+        if (response.status === 400) {
+          throw new Error(`Invalid request parameters. Chain ID: ${this.chainId}, Token: ${tokenAddress}, Wallet: ${walletAddress}. Error: ${errorText}`);
+        }
+        
         throw new Error(`Allowance check failed: ${response.status} - ${errorText}`);
       }
-  
+
       const data = await response.json() as AllowanceResponse;
       console.log('✅ Allowance check result:', data.allowance);
       return data.allowance;
@@ -291,21 +321,46 @@ export interface QuoteRequest {
       if (amount) {
         url.searchParams.append('amount', amount);
       }
-  
-      console.log('Getting approval transaction via proxy:', url.toString());
-  
+
+      console.log('🔍 Detailed approval transaction parameters:');
+      console.log('📋 Chain ID:', this.chainId);
+      console.log('📋 Token Address:', tokenAddress);
+      console.log('📋 Amount:', amount || 'unlimited');
+      console.log('🔗 Full API URL:', url.toString());
+
       const response = await fetch(url.toString(), {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
         },
       });
-  
+
+      console.log('📡 Approval API Response Status:', response.status, response.statusText);
+
       if (!response.ok) {
-        const errorText = await response.text();
+        let errorText;
+        try {
+          const errorData = await response.json();
+          errorText = JSON.stringify(errorData, null, 2);
+          console.error('❌ Approval API Error Response:', errorData);
+        } catch {
+          errorText = await response.text();
+          console.error('❌ Approval API Error Text:', errorText);
+        }
+        
+        console.error('❌ Full approval error details:', {
+          status: response.status,
+          statusText: response.statusText,
+          url: url.toString(),
+          chainId: this.chainId,
+          tokenAddress,
+          amount,
+          error: errorText
+        });
+        
         throw new Error(`Approval transaction failed: ${response.status} - ${errorText}`);
       }
-  
+
       const data = await response.json() as ApproveResponse;
       console.log('✅ Approval transaction created:', data);
       return data;
@@ -328,23 +383,51 @@ export interface QuoteRequest {
       if (swapParams.allowPartialFill) {
         url.searchParams.append('allowPartialFill', swapParams.allowPartialFill);
       }
-  
-      console.log('Getting swap transaction via proxy:', url.toString());
-  
+
+      console.log('🔍 Detailed swap parameters being sent to 1inch API:');
+      console.log('📋 Chain ID:', this.chainId);
+      console.log('📋 Source Token (src):', swapParams.src);
+      console.log('📋 Destination Token (dst):', swapParams.dst);
+      console.log('📋 Amount (in wei):', swapParams.amount);
+      console.log('📋 From Address:', swapParams.from);
+      console.log('📋 Slippage:', swapParams.slippage + '%');
+      console.log('📋 Disable Estimate:', swapParams.disableEstimate);
+      console.log('📋 Allow Partial Fill:', swapParams.allowPartialFill);
+      console.log('🔗 Full API URL:', url.toString());
+
       const response = await fetch(url.toString(), {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
         },
       });
-  
+
+      console.log('📡 API Response Status:', response.status, response.statusText);
+      console.log('📡 Response Headers:', Object.fromEntries(response.headers.entries()));
+
       if (!response.ok) {
-        const errorText = await response.text();
+        let errorText;
+        try {
+          const errorData = await response.json();
+          errorText = JSON.stringify(errorData, null, 2);
+          console.error('❌ API Error Response:', errorData);
+        } catch {
+          errorText = await response.text();
+          console.error('❌ API Error Text:', errorText);
+        }
+        
+        console.error('❌ Full error details:', {
+          status: response.status,
+          statusText: response.statusText,
+          url: url.toString(),
+          error: errorText
+        });
+        
         throw new Error(`Swap transaction failed: ${response.status} - ${errorText}`);
       }
-  
+
       const data = await response.json() as SwapResponse;
-      console.log('✅ Swap transaction created:', data);
+      console.log('✅ Swap transaction created successfully:', data);
       return data;
     }
   }
@@ -638,8 +721,8 @@ export interface QuoteRequest {
         console.log('✅ Approval transaction sent:', approvalTxHash);
         
         // Wait for approval confirmation
-        console.log('⏳ Waiting 10 seconds for approval confirmation...');
-        await new Promise(resolve => setTimeout(resolve, 10000));
+        console.log('⏳ Waiting 3 seconds for approval confirmation...');
+        await new Promise(resolve => setTimeout(resolve, 3000));
       } else {
         console.log('✅ Sufficient allowance available');
       }
@@ -666,25 +749,42 @@ export interface QuoteRequest {
     }
   }
   
-  // Helper to create swap params from your current UI state
-  export function createSwapParamsFromUI(
-    sellToken: { address: string; decimals: number },
-    buyToken: { address: string; decimals: number },
-    sellAmount: string,
-    walletAddress: string,
-    slippage: number = 1
-  ): SwapRequest {
-    // Convert UI amount to wei
-    const amountInWei = parseTokenAmount(sellAmount, sellToken.decimals);
-    
-    return {
-      src: sellToken.address,
-      dst: buyToken.address,
-      amount: amountInWei,
-      from: walletAddress,
-      slippage: slippage.toString(),
-      disableEstimate: 'false',
-      allowPartialFill: 'false'
-    };
-  }
+// Helper to create swap params from your current UI state
+export function createSwapParamsFromUI(
+  sellToken: { address: string; decimals: number },
+  buyToken: { address: string; decimals: number },
+  sellAmount: string,
+  walletAddress: string,
+  slippage: number = 1
+): SwapRequest {
+  // Convert UI amount to wei
+  console.log('🔧 Converting amount:', {
+    sellAmount,
+    decimals: sellToken.decimals,
+    sellToken: sellToken.address,
+    buyToken: buyToken.address
+  });
+  
+  const amountInWei = parseTokenAmount(sellAmount, sellToken.decimals);
+  
+  console.log('🔧 Amount conversion result:', {
+    original: sellAmount,
+    converted: amountInWei,
+    decimals: sellToken.decimals
+  });
+  
+  const swapParams = {
+    src: sellToken.address,
+    dst: buyToken.address,
+    amount: amountInWei,
+    from: walletAddress,
+    slippage: slippage.toString(),
+    disableEstimate: 'false',
+    allowPartialFill: 'false'
+  };
+  
+  console.log('🔧 Final swap parameters:', swapParams);
+  
+  return swapParams;
+}
   

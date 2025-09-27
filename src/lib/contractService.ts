@@ -14,16 +14,14 @@ export const OG_TESTNET_CONFIG = {
   blockExplorer: 'https://chainscan-galileo.0g.ai'
 };
 
-// 0G Mainnet configuration (COMMENTED OUT - USING TESTNET FOR NOW)
-/*
+// 0G Mainnet configuration
 export const OG_MAINNET_CONFIG = {
-  chainId: 16661,
+  chainId: 1661,
   name: '0G Mainnet',
-  currency: 'OG',
+  currency: '0G',
   rpcUrl: 'https://evmrpc.0g.ai',
   blockExplorer: 'https://chainscan.0g.ai'
 };
-*/
 
 // Contract configuration - Provided by backend (not user configurable)
 export const TRADESENSE_CONTRACT = {
