@@ -7,7 +7,7 @@ import { ConnectWallet } from "./ConnectWallet/ConnectWallet";
 export function Navbar() {
   return (
     <nav className="fixed top-0 z-50 bg-black/20 backdrop-blur-xl shadow-2xl w-full">
-        <div className="w-[90%] mx-auto flex items-center justify-between h-20  rouborder-slate-200 dark:border-slate-700 nded-b-3xl">
+        <div className="w-[90%] mx-auto flex items-center justify-between py-5 border-slate-200 dark:border-slate-700 nded-b-3xl">
           {/* Logo and Brand */}
           <Link
             href="/"
