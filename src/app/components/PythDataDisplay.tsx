@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import TradingSignalDisplay from './TradingSignalDisplay';
 
 interface TokenInfo {
   symbol: string;
@@ -43,6 +45,26 @@ interface PythTokenData {
   details?: string;
 }
 
+interface TradingSignal {
+  tokenSymbol: string;
+  signal: 'buy' | 'sell' | 'hold';
+  tp1: number;
+  tp2: number;
+  sl: number;
+  signalTimeframe?: string;
+  confidence?: number;
+  reasoning?: string;
+  timestamp: string;
+  inputData: {
+    symbol: string;
+    currentPrice: number;
+    emaPrice: number;
+    emaConfidence: number;
+    priceConfidence: number;
+    timeframe: string;
+  };
+}
+
 interface PythDataDisplayProps {
   selectedToken: string | null;
   onDataFetch?: (loading: boolean) => void;
@@ -52,6 +74,11 @@ export default function PythDataDisplay({ selectedToken, onDataFetch }: PythData
   const [data, setData] = useState<PythTokenData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Trading signal states
+  const [tradingSignal, setTradingSignal] = useState<TradingSignal | null>(null);
+  const [signalLoading, setSignalLoading] = useState(false);
+  const [signalError, setSignalError] = useState<string | null>(null);
 
   const fetchTokenPrice = async (token: string) => {
     setLoading(true);
@@ -81,10 +108,60 @@ export default function PythDataDisplay({ selectedToken, onDataFetch }: PythData
     }
   };
 
+  const generateTradingSignal = async () => {
+    if (!data) {
+      toast.error('Please fetch token price data first');
+      return;
+    }
+
+    setSignalLoading(true);
+    setSignalError(null);
+    
+    try {
+      const signalData = {
+        symbol: data.token,
+        currentPrice: data.priceData.price,
+        emaPrice: data.emaPrice.price,
+        emaConfidence: data.emaPrice.confidence,
+        priceConfidence: data.priceData.confidence,
+        timeframe: '24h' // Default timeframe as requested
+      };
+
+      console.log('Generating signal with data:', signalData);
+
+      const response = await fetch('/api/generate-signal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(signalData),
+      });
+
+      const result = await response.json();
+
+      if (result.success && result.tradingSignal) {
+        setTradingSignal(result.tradingSignal);
+        toast.success(`Trading signal generated for ${data.token}!`);
+      } else {
+        setSignalError(result.error || 'Failed to generate trading signal');
+        toast.error(result.error || 'Failed to generate trading signal');
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      setSignalError(errorMessage);
+      toast.error(`Error generating signal: ${errorMessage}`);
+    } finally {
+      setSignalLoading(false);
+    }
+  };
+
   // Fetch data when selectedToken changes
   useEffect(() => {
     if (selectedToken) {
       fetchTokenPrice(selectedToken);
+      // Clear previous trading signal when token changes
+      setTradingSignal(null);
+      setSignalError(null);
     }
   }, [selectedToken]);
 
@@ -219,6 +296,18 @@ export default function PythDataDisplay({ selectedToken, onDataFetch }: PythData
       {!data && !loading && !error && selectedToken && (
         <div className="text-center py-8">
           <p className="text-gray-500">Click "Refresh Price" to fetch {selectedToken.toUpperCase()} price data from Pyth Network</p>
+        </div>
+      )}
+
+      {/* Trading Signal Section */}
+      {data && !loading && (
+        <div className="mt-8">
+          <TradingSignalDisplay
+            signal={tradingSignal}
+            loading={signalLoading}
+            error={signalError}
+            onGenerateSignal={generateTradingSignal}
+          />
         </div>
       )}
     </div>
