@@ -349,18 +349,21 @@ export default function TradingSignalDisplay({
   }, [signal]);
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto border border-gray-200">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
-          <div className="p-2 bg-blue-100 rounded-lg">
-            <Brain className="w-6 h-6 text-blue-600" />
+    <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:border-slate-600 transition-all duration-300 shadow-sm hover:shadow-lg relative overflow-hidden group">
+      {/* Subtle Background on Hover */}
+      <div className="absolute inset-0 bg-slate-50/50 dark:bg-slate-800/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      
+      <div className="flex items-center justify-between mb-6 relative z-10">
+        <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-3">
+          <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+            <Brain className="w-6 h-6 text-purple-600 dark:text-purple-400" />
           </div>
           AI Trading Signal
         </h2>
         <button
           onClick={onGenerateSignal}
           disabled={loading}
-          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-6 py-3 rounded-lg transition-all duration-200 flex items-center gap-2 font-medium shadow-md hover:shadow-lg"
+          className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl disabled:shadow-none"
         >
           {loading ? (
             <>
@@ -377,26 +380,31 @@ export default function TradingSignalDisplay({
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
-          <AlertTriangle className="w-5 h-5" />
-          <div>
-            <strong>Error:</strong> {error}
+        <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 px-6 py-4 rounded-xl mb-6 shadow-lg relative z-10">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+              <AlertTriangle className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <strong className="text-lg">Error:</strong>
+              <p className="text-sm mt-1">{error}</p>
+            </div>
           </div>
         </div>
       )}
 
       {loading && (
-        <div className="flex items-center justify-center py-16">
-          <div className="text-center">
+        <div className="flex items-center justify-center py-16 relative z-10">
+          <div className="text-center bg-white dark:bg-gray-800/50 rounded-xl border-2 border-slate-200 dark:border-slate-700 p-8">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <span className="text-gray-600 text-lg">AI is analyzing market data...</span>
-            <p className="text-sm text-gray-500 mt-2">This may take a few seconds</p>
+            <span className="text-blue-800 dark:text-blue-300 font-semibold text-lg">AI is analyzing market data...</span>
+            <p className="text-blue-600 dark:text-blue-400 text-sm mt-2">This may take a few seconds</p>
           </div>
         </div>
       )}
 
       {signal && !loading && (
-        <div className="space-y-6">
+        <div className="space-y-6 relative z-10">
           {/* Main Signal Card */}
           <div className={`bg-gradient-to-r ${getSignalColor(signal.signal)} p-6 rounded-xl text-white shadow-lg`}>
             <div className="flex items-center justify-between mb-4">
@@ -444,7 +452,7 @@ export default function TradingSignalDisplay({
             <span className={`px-3 py-1 rounded-full text-sm font-medium ${getMarketConditionColor(signal.marketCondition)}`}>
               Market: {signal.marketCondition.toUpperCase()}
             </span>
-            <span className="px-3 py-1 rounded-full text-sm font-medium text-blue-600 bg-blue-100">
+            <span className="px-3 py-1 rounded-full text-sm font-medium text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/30">
               Model: {signal.aiModel}
             </span>
           </div>
@@ -452,51 +460,55 @@ export default function TradingSignalDisplay({
           {/* Trading Levels */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Take Profit 1 */}
-            <div className="bg-green-50 border border-green-200 p-4 rounded-lg hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-2 mb-2">
-                <Target className="w-5 h-5 text-green-600" />
-                <h4 className="font-semibold text-green-800">Take Profit 1</h4>
+            <div className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 shadow-sm hover:shadow-lg relative overflow-hidden group">
+              <div className="absolute inset-0 bg-green-50/50 dark:bg-green-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="flex items-center gap-2 mb-2 relative z-10">
+                <Target className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <h4 className="font-semibold text-slate-800 dark:text-slate-300">Take Profit 1</h4>
               </div>
-              <p className="text-2xl font-bold text-green-700">{formatPrice(signal.tp1)}</p>
-              <p className="text-sm text-green-600">
+              <p className="text-2xl font-bold text-green-700 dark:text-green-400 relative z-10">{formatPrice(signal.tp1)}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400 relative z-10">
                 {calculatePercentageChange(signal.tp1, signal.inputData.currentPrice) > '0' ? '+' : ''}
                 {calculatePercentageChange(signal.tp1, signal.inputData.currentPrice)}%
               </p>
             </div>
 
             {/* Take Profit 2 */}
-            <div className="bg-green-50 border border-green-200 p-4 rounded-lg hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-2 mb-2">
-                <Target className="w-5 h-5 text-green-600" />
-                <h4 className="font-semibold text-green-800">Take Profit 2</h4>
+            <div className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 shadow-sm hover:shadow-lg relative overflow-hidden group">
+              <div className="absolute inset-0 bg-green-50/50 dark:bg-green-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="flex items-center gap-2 mb-2 relative z-10">
+                <Target className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <h4 className="font-semibold text-slate-800 dark:text-slate-300">Take Profit 2</h4>
               </div>
-              <p className="text-2xl font-bold text-green-700">{formatPrice(signal.tp2)}</p>
-              <p className="text-sm text-green-600">
+              <p className="text-2xl font-bold text-green-700 dark:text-green-400 relative z-10">{formatPrice(signal.tp2)}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400 relative z-10">
                 {calculatePercentageChange(signal.tp2, signal.inputData.currentPrice) > '0' ? '+' : ''}
                 {calculatePercentageChange(signal.tp2, signal.inputData.currentPrice)}%
               </p>
             </div>
 
             {/* Stop Loss */}
-            <div className="bg-red-50 border border-red-200 p-4 rounded-lg hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-2 mb-2">
-                <Shield className="w-5 h-5 text-red-600" />
-                <h4 className="font-semibold text-red-800">Stop Loss</h4>
+            <div className="bg-white dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 shadow-sm hover:shadow-lg relative overflow-hidden group">
+              <div className="absolute inset-0 bg-purple-50/50 dark:bg-purple-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="flex items-center gap-2 mb-2 relative z-10">
+                <Shield className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                <h4 className="font-semibold text-slate-800 dark:text-slate-300">Stop Loss</h4>
               </div>
-              <p className="text-2xl font-bold text-red-700">{formatPrice(signal.sl)}</p>
-              <p className="text-sm text-red-600">
+              <p className="text-2xl font-bold text-purple-700 dark:text-purple-400 relative z-10">{formatPrice(signal.sl)}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400 relative z-10">
                 {calculatePercentageChange(signal.sl, signal.inputData.currentPrice)}%
               </p>
             </div>
           </div>
 
           {/* AI Reasoning */}
-          <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg">
-            <div className="flex items-center gap-2 mb-3">
-              <Brain className="w-5 h-5 text-blue-600" />
-              <h4 className="font-semibold text-blue-800">AI Analysis & Reasoning</h4>
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-300 shadow-sm hover:shadow-lg relative overflow-hidden group">
+            <div className="absolute inset-0 bg-purple-50/50 dark:bg-purple-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="flex items-center gap-2 mb-3 relative z-10">
+              <Brain className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+              <h4 className="font-semibold text-slate-800 dark:text-slate-300">AI Analysis & Reasoning</h4>
             </div>
-            <p className="text-blue-700 leading-relaxed">{signal.reasoning}</p>
+            <p className="text-slate-700 dark:text-slate-300 leading-relaxed relative z-10">{signal.reasoning}</p>
           </div>
 
           {/* Swap Section - Show for BUY and HOLD signals */}
@@ -682,65 +694,65 @@ export default function TradingSignalDisplay({
           )}
 
           {/* Technical Details Toggle */}
-          <div className="border-t pt-4">
+          <div className="border-t border-slate-200 dark:border-slate-700 pt-4">
             <button
               onClick={() => setShowDetails(!showDetails)}
-              className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2 transition-colors"
+              className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium flex items-center gap-2 transition-colors"
             >
               <Info className="w-4 h-4" />
               {showDetails ? 'Hide' : 'Show'} Technical Details
             </button>
 
             {showDetails && (
-              <div className="mt-4 bg-gray-50 p-6 rounded-lg border border-gray-200">
+              <div className="mt-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h5 className="font-semibold text-gray-700 mb-3">Input Data</h5>
+                    <h5 className="font-semibold text-gray-700 dark:text-gray-300 mb-3">Input Data</h5>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Current Price:</span>
-                        <span className="font-medium">{formatPrice(signal.inputData.currentPrice)}</span>
+                        <span className="text-gray-600 dark:text-gray-400">Current Price:</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">{formatPrice(signal.inputData.currentPrice)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">EMA Price:</span>
-                        <span className="font-medium">{formatPrice(signal.inputData.emaPrice)}</span>
+                        <span className="text-gray-600 dark:text-gray-400">EMA Price:</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">{formatPrice(signal.inputData.emaPrice)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">EMA Confidence:</span>
-                        <span className="font-medium">±{formatPrice(signal.inputData.emaConfidence)}</span>
+                        <span className="text-gray-600 dark:text-gray-400">EMA Confidence:</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">±{formatPrice(signal.inputData.emaConfidence)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Price Confidence:</span>
-                        <span className="font-medium">±{formatPrice(signal.inputData.priceConfidence)}</span>
+                        <span className="text-gray-600 dark:text-gray-400">Price Confidence:</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">±{formatPrice(signal.inputData.priceConfidence)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Timeframe:</span>
-                        <span className="font-medium">{signal.inputData.timeframe}</span>
+                        <span className="text-gray-600 dark:text-gray-400">Timeframe:</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">{signal.inputData.timeframe}</span>
                       </div>
                     </div>
                   </div>
                   <div>
-                    <h5 className="font-semibold text-gray-700 mb-3">Signal Metadata</h5>
+                    <h5 className="font-semibold text-gray-700 dark:text-gray-300 mb-3">Signal Metadata</h5>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Generated:</span>
-                        <span className="font-medium">{formatTime(signal.timestamp)}</span>
+                        <span className="text-gray-600 dark:text-gray-400">Generated:</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">{formatTime(signal.timestamp)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Signal:</span>
-                        <span className="font-medium uppercase">{signal.signal}</span>
+                        <span className="text-gray-600 dark:text-gray-400">Signal:</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200 uppercase">{signal.signal}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Confidence:</span>
-                        <span className="font-medium">{signal.confidence}%</span>
+                        <span className="text-gray-600 dark:text-gray-400">Confidence:</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">{signal.confidence}%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Risk Level:</span>
-                        <span className="font-medium capitalize">{signal.riskLevel}</span>
+                        <span className="text-gray-600 dark:text-gray-400">Risk Level:</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200 capitalize">{signal.riskLevel}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">AI Model:</span>
-                        <span className="font-medium">{signal.aiModel}</span>
+                        <span className="text-gray-600 dark:text-gray-400">AI Model:</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">{signal.aiModel}</span>
                       </div>
                     </div>
                   </div>
@@ -752,18 +764,20 @@ export default function TradingSignalDisplay({
       )}
 
       {!signal && !loading && !error && (
-        <div className="text-center py-16">
-          <div className="p-4 bg-gray-100 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-            <Brain className="w-10 h-10 text-gray-400" />
-          </div>
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">No AI Signal Generated</h3>
-          <p className="text-gray-500 mb-4">
-            Select a token and fetch its price data, then click "Generate AI Signal" to get intelligent trading insights
-          </p>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-md mx-auto">
-            <p className="text-sm text-blue-700">
-              <strong>Powered by OpenRouter:</strong> Using advanced AI models to analyze market data and provide trading signals
+        <div className="text-center py-16 relative z-10">
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-8 shadow-sm">
+            <div className="p-4 bg-purple-100 dark:bg-purple-900/30 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+              <Brain className="w-10 h-10 text-purple-600 dark:text-purple-400" />
+            </div>
+            <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">No AI Signal Generated</h3>
+            <p className="text-slate-500 dark:text-slate-400 mb-4">
+              Select a token and fetch its price data, then click &quot;Generate AI Signal&quot; to get intelligent trading insights
             </p>
+            <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-xl p-4 max-w-md mx-auto">
+              <p className="text-sm text-purple-700 dark:text-purple-300">
+                <strong>Powered by OpenRouter:</strong> Using advanced AI models to analyze market data and provide trading signals
+              </p>
+            </div>
           </div>
         </div>
       )}

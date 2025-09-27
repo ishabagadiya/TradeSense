@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ConnectWallet } from "./ConnectWallet/ConnectWallet";
+import { History } from "lucide-react";
 
 export function Navbar() {
   return (
@@ -13,7 +14,7 @@ export function Navbar() {
             href="/"
             className="flex items-center space-x-3 group hover:scale-105 transition-all duration-300"
           >
-            <div className="relative w-[150px] h-max">
+            <div className="relative w-[200px] h-max">
               <Image
                 src="/logo.svg"
                 alt="TradeSense Logo"
@@ -24,8 +25,17 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Connect Wallet */}
+          {/* Navigation Links and Connect Wallet */}
+          <div className="flex items-center space-x-6">
+            <Link
+              href="/history"
+              className="flex items-center space-x-2 text-white hover:text-green-300 transition-colors duration-300 group"
+            >
+              <History className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+              <span className="font-medium">Trading History</span>
+            </Link>
             <ConnectWallet />
+          </div>
         </div>
     </nav>
   );
