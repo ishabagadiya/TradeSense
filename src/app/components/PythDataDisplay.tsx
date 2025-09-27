@@ -177,15 +177,30 @@ export default function PythDataDisplay({ selectedToken, onDataFetch }: PythData
           });
 
           if (txHash) {
-            toast.success(`Signal stored on 0G Newton Testnet! TX: ${txHash.substring(0, 10)}...`, {
+            toast.success(`Signal submitted to 0G Newton Testnet! TX: ${txHash.substring(0, 10)}...`, {
               toastId: `signal-stored-${data.token}`,
             });
+            console.log(`Full transaction hash: ${txHash}`);
+            console.log(`View transaction: https://chainscan-galileo.0g.ai/tx/${txHash}`);
           }
         } catch (contractError) {
           console.error('Failed to store signal on contract:', contractError);
-          toast.warning('Signal generated but failed to store on 0G Newton Testnet', {
-            toastId: `storage-warning-${data.token}`,
-          });
+          
+          // Check if it's a network/connection error vs actual failure
+          const errorMessage = contractError instanceof Error ? contractError.message : String(contractError);
+          
+          if (errorMessage.includes('no matching receipts') || 
+              errorMessage.includes('timeout') || 
+              errorMessage.includes('network') ||
+              errorMessage.includes('connection')) {
+            toast.info('Signal generated! Blockchain storage may be delayed due to network conditions.', {
+              toastId: `storage-delayed-${data.token}`,
+            });
+          } else {
+            toast.warning('Signal generated but failed to store on 0G Newton Testnet', {
+              toastId: `storage-warning-${data.token}`,
+            });
+          }
         }
       } else {
         setSignalError(result.error || 'Failed to generate trading signal');
