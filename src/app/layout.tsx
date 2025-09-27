@@ -22,7 +22,18 @@ export default function RootLayout({
       <body className={`antialiased`}>
           <RootProvider>
             <Navbar />
-            <ToastContainer />
+            <ToastContainer 
+              position="top-center"
+              autoClose={4000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              limit={3}
+            />
             {children}
             <Footer />
           </RootProvider>

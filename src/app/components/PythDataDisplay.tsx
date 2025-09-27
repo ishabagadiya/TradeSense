@@ -84,6 +84,9 @@ export default function PythDataDisplay({ selectedToken, onDataFetch }: PythData
   const [signalError, setSignalError] = useState<string | null>(null);
 
   const fetchTokenPrice = async (token: string) => {
+    // Prevent duplicate calls
+    if (loading) return;
+    
     setLoading(true);
     setError(null);
     onDataFetch?.(true);
@@ -94,16 +97,22 @@ export default function PythDataDisplay({ selectedToken, onDataFetch }: PythData
       
       if (result.success) {
         setData(result);
-        toast.success(`${token.toUpperCase()} price fetched successfully!`);
+        toast.success(`${token.toUpperCase()} price fetched successfully!`, {
+          toastId: `price-${token}`, // Prevent duplicate toasts
+        });
       } else {
         setError(result.error || 'Failed to fetch price data');
-        toast.error(result.error || 'Failed to fetch price data');
+        toast.error(result.error || 'Failed to fetch price data', {
+          toastId: `error-${token}`,
+        });
         setData(null);
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
       setError(errorMessage);
-      toast.error(`Error: ${errorMessage}`);
+      toast.error(`Error: ${errorMessage}`, {
+        toastId: `fetch-error-${token}`,
+      });
       setData(null);
     } finally {
       setLoading(false);
@@ -113,9 +122,14 @@ export default function PythDataDisplay({ selectedToken, onDataFetch }: PythData
 
   const generateTradingSignal = async () => {
     if (!data) {
-      toast.error('Please fetch token price data first');
+      toast.error('Please fetch token price data first', {
+        toastId: 'no-data-error',
+      });
       return;
     }
+
+    // Prevent duplicate calls
+    if (signalLoading) return;
 
     setSignalLoading(true);
     setSignalError(null);
@@ -144,7 +158,9 @@ export default function PythDataDisplay({ selectedToken, onDataFetch }: PythData
 
       if (result.success && result.tradingSignal) {
         setTradingSignal(result.tradingSignal);
-        toast.success(`AI trading signal generated for ${data.token}!`);
+        toast.success(`AI trading signal generated for ${data.token}!`, {
+          toastId: `signal-generated-${data.token}`,
+        });
 
         // Store signal in 0G Newton Testnet contract
         try {
@@ -160,20 +176,28 @@ export default function PythDataDisplay({ selectedToken, onDataFetch }: PythData
           });
 
           if (txHash) {
-            toast.success(`Signal stored on 0G Newton Testnet! TX: ${txHash.substring(0, 10)}...`);
+            toast.success(`Signal stored on 0G Newton Testnet! TX: ${txHash.substring(0, 10)}...`, {
+              toastId: `signal-stored-${data.token}`,
+            });
           }
         } catch (contractError) {
           console.error('Failed to store signal on contract:', contractError);
-          toast.warning('Signal generated but failed to store on 0G Newton Testnet');
+          toast.warning('Signal generated but failed to store on 0G Newton Testnet', {
+            toastId: `storage-warning-${data.token}`,
+          });
         }
       } else {
         setSignalError(result.error || 'Failed to generate trading signal');
-        toast.error(result.error || 'Failed to generate trading signal');
+        toast.error(result.error || 'Failed to generate trading signal', {
+          toastId: `signal-error-${data.token}`,
+        });
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
       setSignalError(errorMessage);
-      toast.error(`Error generating signal: ${errorMessage}`);
+      toast.error(`Error generating signal: ${errorMessage}`, {
+        toastId: `signal-generation-error-${data.token}`,
+      });
     } finally {
       setSignalLoading(false);
     }
