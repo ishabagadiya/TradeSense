@@ -577,11 +577,14 @@ export default function InfluencerProfitUniverse() {
           transform: translateY(-5px);
         }
       `}</style>
-      
-      <h1 className="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-        Tradesense Top Crypto Universe
+      <div className="w-full text-right space-y-4 flex justify-end items-end flex-col">
+      <h1 className="text-left text-5xl font-extrabold text-slate-800 dark:text-slate-100 leading-tight tracking-wide mb-2">
+        <span className="inline-block bg-gradient-to-br from-green-300 to-white bg-clip-text text-transparent">
+          Crypto Universe
+        </span>
       </h1>
-      <p className="text-gray-300 mb-8">Visualizing the crypto ecosystem in real-time</p>
+      <p className="text-right text-slate-600 dark:text-slate-400 text-xl font-medium mb-8">Visualizing the crypto ecosystem in real-time</p>
+      </div>
 
       <div className="w-full max-w-6xl relative rounded-xl overflow-hidden bg-[#020617] shadow-2xl border border-blue-900">
         <svg
