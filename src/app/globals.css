@@ -176,11 +176,37 @@ body {
 input:focus,
 button:focus {
   outline: none;
-  ring: 2px solid rgba(59, 130, 246, 0.5);
+  ring: 2px solid rgba(34, 197, 94, 0.5);
+}
+
+/* Global button styles - Green and Rounded */
+button {
+  border-radius: 0.75rem; /* rounded-xl */
+  transition: all 0.2s ease-in-out;
+}
+
+/* Override specific button colors to green */
+button:not([class*="bg-"]):not([class*="text-"]) {
+  background-color: rgb(34, 197, 94); /* green-500 */
+  color: white;
+}
+
+button:not([class*="bg-"]):not([class*="text-"]):hover {
+  background-color: rgb(22, 163, 74); /* green-600 */
 }
 
 /* Custom gradient animations */
 @keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes gradientShift {
   0%,
   100% {
     background-position: 0% 50%;

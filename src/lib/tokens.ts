@@ -55,17 +55,7 @@ export const tokens: Token[] = [
     volume24h: 800000000,
     color: '#0033ad'
   },
-  {
-    id: 'polygon',
-    name: 'Polygon',
-    symbol: 'MATIC',
-    icon: '⬟',
-    price: 0.89,
-    change24h: -2.15,
-    marketCap: 8500000000,
-    volume24h: 450000000,
-    color: '#8247e5'
-  },
+
   {
     id: 'chainlink',
     name: 'Chainlink',
@@ -76,6 +66,39 @@ export const tokens: Token[] = [
     marketCap: 8000000000,
     volume24h: 600000000,
     color: '#2a5ada'
+  },
+  {
+    id: 'polkadot',
+    name: 'Polkadot',
+    symbol: 'DOT',
+    icon: '●',
+    price: 6.78,
+    change24h: 2.34,
+    marketCap: 7500000000,
+    volume24h: 400000000,
+    color: '#e6007a'
+  },
+  {
+    id: 'uniswap',
+    name: 'Uniswap',
+    symbol: 'UNI',
+    icon: '🦄',
+    price: 7.45,
+    change24h: -0.87,
+    marketCap: 4500000000,
+    volume24h: 350000000,
+    color: '#ff007a'
+  },
+  {
+    id: 'avalanche',
+    name: 'Avalanche',
+    symbol: 'AVAX',
+    icon: '🔺',
+    price: 35.20,
+    change24h: 4.12,
+    marketCap: 12000000000,
+    volume24h: 800000000,
+    color: '#e84142'
   }
 ];
 

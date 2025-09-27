@@ -1,42 +1,32 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ConnectWallet } from "./ConnectWallet/ConnectWallet";
-import { Waves } from "lucide-react";
-import { toast } from "react-toastify";
 
 export function Navbar() {
-  const showComingSoonToast = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    toast.info("Coming Soon!", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-opacity-80 backdrop-blur-md border-b border-blue-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-        <div className="flex items-center justify-between h-16">
+    <nav className="fixed top-0 z-50 bg-black/20 backdrop-blur-xl shadow-2xl w-full">
+        <div className="w-[90%] mx-auto flex items-center justify-between h-20  rouborder-slate-200 dark:border-slate-700 nded-b-3xl">
+          {/* Logo and Brand */}
           <Link
             href="/"
-            className="flex items-center space-x-2 text-primary hover:text-primary-dark transition-colors"
+            className="flex items-center space-x-3 group hover:scale-105 transition-all duration-300"
           >
-            <Waves className="w-8 h-8" />
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-cyan bg-clip-text text-white">
-              TradeSense
-            </span>
+            <div className="relative w-[150px] h-max">
+              <Image
+                src="/logo.svg"
+                alt="TradeSense Logo"
+                width={40}
+                height={40}
+                className="w-full h-auto group-hover:scale-110 transition-transform duration-300"
+              />
+            </div>
           </Link>
 
-          <div className="pl-6 border-l border-blue-100">
+          {/* Connect Wallet */}
             <ConnectWallet />
-          </div>
         </div>
-      </div>
     </nav>
   );
 }
