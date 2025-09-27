@@ -9,12 +9,8 @@ export function Navbar() {
   const showComingSoonToast = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     toast.info("Coming Soon!", {
-      position: "top-center",
+      toastId: 'coming-soon-features', // Prevent duplicate toasts
       autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
     });
   };
 
@@ -33,6 +29,12 @@ export function Navbar() {
           </Link>
           
           <div className="flex items-center space-x-6">
+            <Link
+              href="/history"
+              className="text-gray-300 hover:text-white transition-colors font-medium"
+            >
+              History
+            </Link>
             <Link
               href="/features"
               onClick={showComingSoonToast}

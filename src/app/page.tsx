@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import MobileResponsiveMessage from "./components/MobileScreenPage";
 import TokenSelector from "./components/TokenSelector";
 import PythDataDisplay from "./components/PythDataDisplay";
-import SignalHistory from "./components/SignalHistory";
-import { Brain, Zap, Database, TrendingUp, Sparkles, ChevronRight } from "lucide-react";
+import { Brain, Zap, Database, TrendingUp, Sparkles, ChevronRight, History } from "lucide-react";
+import Orbit from "./components/Orbit";
 
 export default function Home() {
+  const router = useRouter();
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -138,7 +140,44 @@ export default function Home() {
           </div>
           
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <SignalHistory />
+            <div className="p-12 text-center">
+              <div className="p-6 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                <History className="w-12 h-12 text-purple-600" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                Access Your Complete Trading History
+              </h3>
+              
+              <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                View all your AI-generated trading signals stored immutably on 0G Newton Testnet. 
+                Connect your wallet to access your personalized trading history.
+              </p>
+
+              <button
+                onClick={() => router.push('/history')}
+                className="group bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white px-8 py-4 rounded-xl font-medium text-lg shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center gap-3 mx-auto"
+              >
+                <Database className="w-6 h-6" />
+                View Trading History
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              <div className="mt-6 flex justify-center gap-6 text-sm text-gray-500">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span>Blockchain Stored</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                  <span>Wallet Connected</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                  <span>0G Network</span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -189,6 +228,8 @@ export default function Home() {
           </div>
         </section>
       </main>
+
+      <Orbit />
 
       {/* Footer */}
       <footer className="bg-gradient-to-r from-gray-900 to-black text-white py-12">

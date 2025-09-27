@@ -61,9 +61,9 @@ export class ContractService {
           expectedChainId: OG_TESTNET_CONFIG.chainId
         });
         
-        // Verify we're on the correct network
+        // Verify we're on the correct network - STRICT REQUIREMENT
         if (Number(network.chainId) !== OG_TESTNET_CONFIG.chainId) {
-          console.warn(`Wrong network! Expected ${OG_TESTNET_CONFIG.chainId}, got ${network.chainId}`);
+          throw new Error(`Wrong network! Please switch to 0G Newton Testnet (Chain ID: ${OG_TESTNET_CONFIG.chainId}). Current network: ${network.chainId}`);
         }
         
         // Check signer address and balance
@@ -104,9 +104,35 @@ export class ContractService {
       if (!this.contract || !this.signer) {
         await this.initializeContract();
       }
+      
+      // Additional network check
+      await this.validateNetwork();
+      
       return this.contract !== null && this.signer !== null;
     } catch (error) {
       console.error('Failed to ensure connection:', error);
+      return false;
+    }
+  }
+
+  async validateNetwork(): Promise<void> {
+    if (typeof window !== 'undefined' && window.ethereum) {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const network = await provider.getNetwork();
+      
+      if (Number(network.chainId) !== OG_TESTNET_CONFIG.chainId) {
+        throw new Error(`Please switch to 0G Newton Testnet. Current network: Chain ID ${network.chainId}`);
+      }
+    } else {
+      throw new Error('No wallet detected. Please install MetaMask or connect your wallet.');
+    }
+  }
+
+  async isConnectedToCorrectNetwork(): Promise<boolean> {
+    try {
+      await this.validateNetwork();
+      return true;
+    } catch (error) {
       return false;
     }
   }
