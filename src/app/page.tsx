@@ -16,7 +16,19 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleTokenSelect = (token: string) => {
+    console.log('Token selected:', token);
     setSelectedToken(token);
+    
+    // Scroll to the Price Analysis Section after a short delay
+    setTimeout(() => {
+      const priceAnalysisSection = document.querySelector('[data-section="price-analysis"]');
+      if (priceAnalysisSection) {
+        priceAnalysisSection.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }, 100);
   };
 
   const handleDataFetch = (loading: boolean) => {
@@ -28,7 +40,7 @@ export default function Home() {
       <MobileResponsiveMessage />
       
       {/* Hero Section */}
-      <section className="relative bg-black text-white w-full h-[400px] overflow-hidden flex items-center justify-center mt-[100px]">
+      <section className="relative bg-black text-white w-full h-[400px] overflow-hidden flex items-center justify-center mt-[200px]">
         {/* Background Grid Image */}
         <Image 
           src="/assets/bggrid.png" 
@@ -74,35 +86,11 @@ export default function Home() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-12 space-y-16">
         
-        <MainPage />
-        {/* Token Selection Section */}
-        <section className="space-y-8">
-          <div className="text-center space-y-4">
-            <div className="flex justify-center">
-              <div className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-full text-sm font-medium">
-                <Sparkles className="w-4 h-4" />
-                <span>Step 1: Select Token</span>
-              </div>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800">
-              Choose Your Trading Asset
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Select from popular cryptocurrencies to analyze with our AI-powered trading signals
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <TokenSelector 
-              onTokenSelect={handleTokenSelect}
-              loading={isLoading}
-            />
-          </div>
-        </section>
+        <MainPage onTokenSelect={handleTokenSelect} loading={isLoading} />
         
         {/* Price Analysis Section */}
         {selectedToken && (
-          <section className="space-y-8">
+          <section className="space-y-8" data-section="price-analysis">
             <div className="text-center space-y-4">
               <div className="flex justify-center">
                 <div className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-2 rounded-full text-sm font-medium">
@@ -110,19 +98,29 @@ export default function Home() {
                   <span>Step 2: Analyze & Generate</span>
                 </div>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-800">
+              <h2 className="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-slate-100">
                 AI Market Analysis
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
                 Get real-time price data from Pyth Network and generate intelligent trading signals
               </p>
             </div>
             
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-              <PythDataDisplay 
-                selectedToken={selectedToken}
-                onDataFetch={handleDataFetch}
-              />
+            <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+              {/* Background Pattern */}
+              <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-purple-50/50 dark:from-green-900/10 dark:to-purple-900/10"></div>
+              <div className="absolute inset-0 opacity-20" style={{
+                backgroundImage: `radial-gradient(circle at 25% 25%, rgba(34, 197, 94, 0.1) 1px, transparent 1px),
+                                radial-gradient(circle at 75% 75%, rgba(147, 51, 234, 0.1) 1px, transparent 1px)`,
+                backgroundSize: '20px 20px'
+              }}></div>
+              
+              <div className="relative z-10">
+                <PythDataDisplay 
+                  selectedToken={selectedToken}
+                  onDataFetch={handleDataFetch}
+                />
+              </div>
             </div>
           </section>
         )}

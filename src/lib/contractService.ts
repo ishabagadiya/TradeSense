@@ -244,8 +244,33 @@ export class ContractService {
         throw new Error('Contract not initialized');
       }
 
-      // Test contract connection first (but don't fail if it's just a network issue)
-      console.log('🔄 Testing contract connection before storing signal...');
+      // Verify network connection before proceeding
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      
+      // Check if provider is properly connected
+      try {
+        const accounts = await provider.listAccounts();
+        if (accounts.length === 0) {
+          throw new Error('No accounts connected to wallet');
+        }
+        console.log('Connected accounts:', accounts.length);
+      } catch (accountError) {
+        console.error('Account check failed:', accountError);
+        throw new Error('Wallet connection error. Please ensure your wallet is connected.');
+      }
+      
+      const network = await provider.getNetwork();
+      console.log('Network check before transaction:', {
+        chainId: network.chainId.toString(),
+        name: network.name
+      });
+      
+      // Additional network validation
+      if (Number(network.chainId) !== OG_TESTNET_CONFIG.chainId) {
+        throw new Error(`Wrong network detected. Please switch to 0G Newton Testnet (Chain ID: ${OG_TESTNET_CONFIG.chainId})`);
+      }
+
+      // Test contract connection first
       const connectionTest = await this.testContractConnection();
       if (!connectionTest) {
         console.warn('⚠️ Contract connection test failed, running diagnostics...');
@@ -380,10 +405,25 @@ export class ContractService {
       }
 
       console.log('Transaction submitted:', tx.hash);
-      const receipt = await tx.wait();
-      console.log('Transaction confirmed:', receipt?.hash);
       
-      return tx.hash;
+      try {
+        // Wait for transaction with timeout
+        const receipt = await Promise.race([
+          tx.wait(),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Transaction timeout after 2 minutes')), 120000)
+          )
+        ]) as any;
+        
+        console.log('Transaction confirmed:', receipt?.hash);
+        return tx.hash;
+      } catch (receiptError) {
+        console.warn('Transaction receipt error (but transaction was submitted):', receiptError);
+        
+        // Even if receipt fails, the transaction might still be valid
+        // Return the hash so user knows it was submitted
+        return tx.hash;
+      }
     } catch (error) {
       console.error('Failed to store signal:', error);
       
@@ -485,6 +525,75 @@ export class ContractService {
 
   formatTimestamp(timestamp: bigint): Date {
     return new Date(Number(timestamp) * 1000);
+  }
+
+  async checkTransactionStatus(txHash: string): Promise<any> {
+    try {
+      if (typeof window !== 'undefined' && window.ethereum) {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        
+        // First check if transaction exists
+        const tx = await provider.getTransaction(txHash);
+        console.log('Transaction status:', tx);
+        
+        if (tx) {
+          // Try to get receipt with timeout
+          try {
+            const receipt = await Promise.race([
+              provider.getTransactionReceipt(txHash),
+              new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Receipt timeout')), 30000)
+              )
+            ]) as any;
+            
+            console.log('Transaction receipt:', receipt);
+            return { 
+              tx, 
+              receipt, 
+              status: receipt ? 'confirmed' : 'pending',
+              explorerUrl: `${OG_TESTNET_CONFIG.blockExplorer}/tx/${txHash}`
+            };
+          } catch (receiptError) {
+            console.log('Receipt not available yet:', receiptError);
+            return { 
+              tx, 
+              receipt: null, 
+              status: 'pending',
+              explorerUrl: `${OG_TESTNET_CONFIG.blockExplorer}/tx/${txHash}`
+            };
+          }
+        } else {
+          return { tx: null, receipt: null, status: 'not_found' };
+        }
+      }
+    } catch (error) {
+      console.error('Error checking transaction status:', error);
+      return { error };
+    }
+  }
+
+  // Utility method to get network info for debugging
+  async getNetworkInfo(): Promise<any> {
+    try {
+      if (typeof window !== 'undefined' && window.ethereum) {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const network = await provider.getNetwork();
+        const accounts = await provider.listAccounts();
+        const balance = accounts.length > 0 ? await provider.getBalance(accounts[0].address) : '0';
+        
+        return {
+          chainId: network.chainId.toString(),
+          name: network.name,
+          accounts: accounts.length,
+          balance: ethers.formatEther(balance) + ' 0G',
+          expectedChainId: OG_TESTNET_CONFIG.chainId,
+          isCorrectNetwork: Number(network.chainId) === OG_TESTNET_CONFIG.chainId
+        };
+      }
+    } catch (error) {
+      console.error('Error getting network info:', error);
+      return { error };
+    }
   }
 }
 
