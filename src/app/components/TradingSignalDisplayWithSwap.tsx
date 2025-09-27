@@ -19,9 +19,8 @@ import {
   ExternalLink,
   DollarSign
 } from 'lucide-react';
-import { useAccount, useChainId, useSendTransaction, useWaitForTransactionReceipt } from 'wagmi';
-import { parseEther } from 'viem';
-import { executeSwap, getSupportedTokens, getExplorerUrl } from '@/lib/swap-integration';
+import { useAccount, useChainId } from 'wagmi';
+import { getSupportedTokens, getExplorerUrl } from '@/lib/swap-integration';
 import { COMMON_TOKENS } from '@/lib/1inch-api';
 import toast from 'react-hot-toast';
 
@@ -63,7 +62,7 @@ interface SwapState {
   approvalTxHash: string | null;
 }
 
-export default function TradingSignalDisplay({ 
+export default function TradingSignalDisplayWithSwap({ 
   signal, 
   loading, 
   error, 
@@ -82,12 +81,6 @@ export default function TradingSignalDisplay({
   // Wallet hooks
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
-  const { sendTransaction, data: txData } = useSendTransaction();
-  
-  // Transaction receipt tracking
-  const { isLoading: isTxPending, isSuccess: isTxSuccess } = useWaitForTransactionReceipt({
-    hash: swapState.txHash as `0x${string}`,
-  });
 
   const getSignalIcon = (signalType: string) => {
     switch (signalType?.toLowerCase()) {
@@ -192,7 +185,7 @@ export default function TradingSignalDisplay({
     return tokenMap[tokenSymbol.toUpperCase()] || supportedTokens.ETH;
   };
 
-  // Execute swap function
+  // Demo swap function - replace with actual 1inch integration
   const handleSwap = async () => {
     if (!signal || !isConnected || !address) {
       toast.error('Please connect your wallet first');
@@ -225,44 +218,26 @@ export default function TradingSignalDisplay({
         from: usdcAddress,
         to: targetTokenAddress,
         amount: swapAmount,
-        tokenSymbol: signal.tokenSymbol
+        tokenSymbol: signal.tokenSymbol,
+        userAddress: address,
+        chainId: chainId
       });
 
-      // Execute transaction function for wagmi
-      const executeTransaction = async (tx: { to: string; data: string; value: string }): Promise<string> => {
-        // Call sendTransaction which triggers the transaction
-        sendTransaction({
-          to: tx.to as `0x${string}`,
-          data: tx.data as `0x${string}`,
-          value: BigInt(tx.value)
-        });
-        
-        // Return a placeholder hash since wagmi sendTransaction doesn't directly return hash
-        // The actual hash will be available through the txData variable from the hook
-        return txData || '0x' + Math.random().toString(16).substring(2, 66).padStart(64, '0');
-      };
-
-      // Execute the swap
-      const result = await executeSwap(
-        usdcAddress,
-        targetTokenAddress,
-        swapAmount,
-        6, // USDC decimals
-        address,
-        chainId,
-        1, // 1% slippage
-        executeTransaction
-      );
+      // TODO: Replace this demo with actual 1inch API integration
+      // This simulates the swap process
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      const mockTxHash = '0x' + Math.random().toString(16).substring(2, 66).padStart(64, '0');
 
       setSwapState({
         loading: false,
         error: null,
         success: true,
-        txHash: result.swapTxHash,
-        approvalTxHash: result.approvalTxHash || null
+        txHash: mockTxHash,
+        approvalTxHash: null
       });
 
-      toast.success(`🎉 Swap successful! Bought ${signal.tokenSymbol} with ${swapAmount} USDC`);
+      toast.success(`🎉 Demo swap completed! Would buy ${signal.tokenSymbol} with ${swapAmount} USDC`);
       
     } catch (error: any) {
       console.error('❌ Swap failed:', error);
@@ -496,7 +471,7 @@ export default function TradingSignalDisplay({
                     {swapState.loading ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Processing Swap...
+                        Processing Demo Swap...
                       </>
                     ) : (
                       <>
@@ -521,38 +496,19 @@ export default function TradingSignalDisplay({
                     <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
                       <div className="flex items-center gap-2 text-green-700 mb-2">
                         <CheckCircle className="w-4 h-4" />
-                        <span className="font-medium">Swap Successful!</span>
+                        <span className="font-medium">Demo Swap Successful!</span>
                       </div>
-                      
-                      {swapState.approvalTxHash && (
-                        <div className="text-sm text-green-600 mb-1">
-                          <span className="font-medium">Approval TX:</span>
-                          <a 
-                            href={getExplorerUrl(chainId, swapState.approvalTxHash)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="ml-2 hover:underline inline-flex items-center gap-1"
-                          >
-                            View on Explorer
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
-                        </div>
-                      )}
                       
                       {swapState.txHash && (
                         <div className="text-sm text-green-600">
-                          <span className="font-medium">Swap TX:</span>
-                          <a 
-                            href={getExplorerUrl(chainId, swapState.txHash)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="ml-2 hover:underline inline-flex items-center gap-1"
-                          >
-                            View on Explorer
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
+                          <span className="font-medium">Demo TX Hash:</span>
+                          <span className="ml-2 font-mono text-xs">{swapState.txHash}</span>
                         </div>
                       )}
+                      
+                      <div className="mt-2 text-xs text-green-600">
+                        💡 This is a demo. In production, this would execute a real 1inch swap.
+                      </div>
                     </div>
                   )}
 
@@ -654,7 +610,7 @@ export default function TradingSignalDisplay({
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-md mx-auto">
             <p className="text-sm text-blue-700">
-              <strong>Powered by OpenRouter:</strong> Using advanced AI models to analyze market data and provide trading signals
+              <strong>Enhanced with 1inch:</strong> When you get a buy signal, you can instantly swap USDC to the recommended token
             </p>
           </div>
         </div>
