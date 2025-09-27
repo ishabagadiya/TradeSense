@@ -15,7 +15,7 @@ export const tokens: Token[] = [
     id: 'bitcoin',
     name: 'Bitcoin',
     symbol: 'BTC',
-    icon: '₿',
+    icon: '/img/btc.png',
     price: 43250.50,
     change24h: 2.45,
     marketCap: 850000000000,
@@ -26,7 +26,7 @@ export const tokens: Token[] = [
     id: 'ethereum',
     name: 'Ethereum',
     symbol: 'ETH',
-    icon: 'Ξ',
+    icon: '/img/eth.png',
     price: 2650.75,
     change24h: -1.23,
     marketCap: 320000000000,
@@ -37,7 +37,7 @@ export const tokens: Token[] = [
     id: 'solana',
     name: 'Solana',
     symbol: 'SOL',
-    icon: '◎',
+    icon: '/img/solana.png',
     price: 98.45,
     change24h: 5.67,
     marketCap: 42000000000,
@@ -48,19 +48,18 @@ export const tokens: Token[] = [
     id: 'cardano',
     name: 'Cardano',
     symbol: 'ADA',
-    icon: '₳',
+    icon: '/img/cardano.png',
     price: 0.52,
     change24h: 3.21,
     marketCap: 18000000000,
     volume24h: 800000000,
     color: '#0033ad'
   },
-
   {
     id: 'chainlink',
     name: 'Chainlink',
     symbol: 'LINK',
-    icon: '🔗',
+    icon: '/img/chainlink.png', // Will need to add this image
     price: 14.25,
     change24h: 1.89,
     marketCap: 8000000000,
@@ -71,7 +70,7 @@ export const tokens: Token[] = [
     id: 'polkadot',
     name: 'Polkadot',
     symbol: 'DOT',
-    icon: '●',
+    icon: '/img/polkadot.png',
     price: 6.78,
     change24h: 2.34,
     marketCap: 7500000000,
@@ -82,7 +81,7 @@ export const tokens: Token[] = [
     id: 'uniswap',
     name: 'Uniswap',
     symbol: 'UNI',
-    icon: '🦄',
+    icon: '/img/uniswap.png', // Will need to add this image
     price: 7.45,
     change24h: -0.87,
     marketCap: 4500000000,
@@ -93,12 +92,45 @@ export const tokens: Token[] = [
     id: 'avalanche',
     name: 'Avalanche',
     symbol: 'AVAX',
-    icon: '🔺',
+    icon: '/img/avalanche.png',
     price: 35.20,
     change24h: 4.12,
     marketCap: 12000000000,
     volume24h: 800000000,
     color: '#e84142'
+  },
+  {
+    id: 'bnb',
+    name: 'BNB',
+    symbol: 'BNB',
+    icon: '/img/bnb.png',
+    price: 315.20,
+    change24h: 2.12,
+    marketCap: 48000000000,
+    volume24h: 1200000000,
+    color: '#f3ba2f'
+  },
+  {
+    id: 'tron',
+    name: 'TRON',
+    symbol: 'TRX',
+    icon: '/img/tron.png',
+    price: 0.12,
+    change24h: 1.45,
+    marketCap: 10000000000,
+    volume24h: 500000000,
+    color: '#ff060a'
+  },
+  {
+    id: 'ton',
+    name: 'TON',
+    symbol: 'TON',
+    icon: '/img/ton-coin.png',
+    price: 2.45,
+    change24h: 3.67,
+    marketCap: 8500000000,
+    volume24h: 300000000,
+    color: '#0098ea'
   }
 ];
 

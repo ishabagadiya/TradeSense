@@ -1271,11 +1271,23 @@ const MainPage = ({ onTokenSelect, loading = false }: MainPageProps) => {
                               {/* Token Header */}
                               <div className="flex items-center justify-between relative z-10">
                         <div className="flex items-center space-x-4">
-                                  <div
-                            className="w-12 h-12 rounded-lg flex items-center justify-center text-lg font-semibold text-white shadow-sm"
-                                    style={{ backgroundColor: token.color }}
-                                  >
-                                    {token.icon}
+                                  <div className="w-12 h-12 rounded-lg flex items-center justify-center shadow-sm overflow-hidden">
+                                    <img 
+                                      src={token.icon} 
+                                      alt={token.name}
+                                      className="w-full h-full object-cover"
+                                      onError={(e) => {
+                                        // Fallback to colored background with symbol if image fails to load
+                                        const target = e.target as HTMLImageElement;
+                                        target.style.display = 'none';
+                                        const parent = target.parentElement;
+                                        if (parent) {
+                                          parent.style.backgroundColor = token.color;
+                                          parent.innerHTML = token.symbol.charAt(0);
+                                          parent.className += ' text-white font-semibold text-lg';
+                                        }
+                                      }}
+                                    />
                                   </div>
                                   <div>
                             <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
