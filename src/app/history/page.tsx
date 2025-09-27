@@ -218,13 +218,13 @@ export default function HistoryPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="p-4 bg-white rounded-full shadow-lg mb-4">
-            <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
+          <div className="p-4 bg-white/10 backdrop-blur-sm rounded-full shadow-lg mb-4">
+            <Loader2 className="w-12 h-12 text-green-400 animate-spin" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">Loading Trading History</h2>
-          <p className="text-gray-500">Connecting to 0G Newton Testnet...</p>
+          <h2 className="text-xl font-semibold text-white mb-2">Loading Trading History</h2>
+          <p className="text-slate-400">Connecting to 0G Newton Testnet...</p>
         </div>
       </div>
     );
@@ -232,30 +232,47 @@ export default function HistoryPage() {
 
   if (!authenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+      <div className="min-h-screen bg-black">
         <div className="max-w-4xl mx-auto px-4 py-20 text-center">
           <button
             onClick={() => router.push('/')}
-            className="mb-8 flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
+            className="mb-8 flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Home
           </button>
           
-          <div className="bg-white rounded-2xl shadow-xl p-12 border border-gray-200">
-            <div className="p-4 bg-blue-100 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-              <Wallet className="w-10 h-10 text-blue-600" />
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl p-12 border border-slate-200 dark:border-slate-700 relative overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-purple-50/50 dark:from-green-900/10 dark:to-purple-900/10"></div>
+            <div
+              className="absolute inset-0 opacity-20"
+              style={{
+                backgroundImage: `radial-gradient(circle at 25% 25%, rgba(34, 197, 94, 0.1) 1px, transparent 1px),
+                                radial-gradient(circle at 75% 75%, rgba(147, 51, 234, 0.1) 1px, transparent 1px)`,
+                backgroundSize: "20px 20px",
+              }}
+            ></div>
+            
+            <div className="relative z-10">
+              <div className="p-4 bg-gradient-to-r from-green-500 to-green-600 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                <Wallet className="w-10 h-10 text-white" />
+              </div>
+              <h1 className="text-4xl font-bold text-slate-800 dark:text-slate-100 mb-4">
+                <span className="bg-gradient-to-br from-green-300 to-white bg-clip-text text-transparent">
+                  Connect Your Wallet
+                </span>
+              </h1>
+              <p className="text-lg text-slate-600 dark:text-slate-400 mb-8">
+                Connect your wallet to view your trading history stored on 0G Newton Testnet
+              </p>
+              <button
+                onClick={login}
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 py-4 rounded-xl font-medium text-lg shadow-lg hover:shadow-2xl transition-all duration-300"
+              >
+                Connect Wallet
+              </button>
             </div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">Connect Your Wallet</h1>
-            <p className="text-lg text-gray-600 mb-8">
-              Connect your wallet to view your trading history stored on 0G Newton Testnet
-            </p>
-            <button
-              onClick={login}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-200"
-            >
-              Connect Wallet
-            </button>
           </div>
         </div>
       </div>
@@ -263,13 +280,13 @@ export default function HistoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
           <button
             onClick={() => router.push('/')}
-            className="mb-6 flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
+            className="mb-6 flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Home
@@ -277,15 +294,17 @@ export default function HistoryPage() {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-gradient-to-r from-purple-100 to-blue-100 rounded-xl">
-                <Database className="w-8 h-8 text-purple-600" />
+              <div className="p-3 bg-gradient-to-r from-green-500 to-green-600 rounded-xl">
+                <Database className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-4xl font-bold text-gray-800 flex items-center gap-2">
-                  Your Trading History
+                <h1 className="text-5xl font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                  <span className="bg-gradient-to-br from-green-300 to-white bg-clip-text text-transparent">
+                    Your Trading History
+                  </span>
                   <Sparkles className="w-8 h-8 text-yellow-500" />
                 </h1>
-                <p className="text-gray-600 flex items-center gap-2">
+                <p className="text-slate-600 dark:text-slate-400 flex items-center gap-2 text-xl font-medium">
                   <History className="w-4 h-4" />
                   Stored immutably on 0G Newton Testnet
                 </p>
@@ -295,7 +314,7 @@ export default function HistoryPage() {
             <button
               onClick={handleRefreshSignals}
               disabled={refreshing || !networkConnected}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-6 py-3 rounded-lg transition-all duration-200 flex items-center gap-2 font-medium shadow-md hover:shadow-lg"
+              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-6 py-3 rounded-xl transition-all duration-300 flex items-center gap-2 font-medium shadow-lg hover:shadow-2xl"
             >
               {refreshing ? (
                 <>
@@ -314,8 +333,8 @@ export default function HistoryPage() {
 
         {/* Network Error */}
         {networkError && (
-          <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg flex items-center gap-3">
-            <AlertCircle className="w-5 h-5 text-red-500" />
+          <div className="mb-6 bg-red-900/20 border border-red-500/30 text-red-400 px-6 py-4 rounded-xl flex items-center gap-3 backdrop-blur-sm">
+            <AlertCircle className="w-5 h-5 text-red-400" />
             <div>
               <p className="font-medium">Network Connection Required</p>
               <p className="text-sm">{networkError}</p>
@@ -323,60 +342,70 @@ export default function HistoryPage() {
           </div>
         )}
 
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden relative">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-purple-50/50 dark:from-green-900/10 dark:to-purple-900/10"></div>
+          <div
+            className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage: `radial-gradient(circle at 25% 25%, rgba(34, 197, 94, 0.1) 1px, transparent 1px),
+                              radial-gradient(circle at 75% 75%, rgba(147, 51, 234, 0.1) 1px, transparent 1px)`,
+              backgroundSize: "20px 20px",
+            }}
+          ></div>
           {/* Stats Cards */}
-          <div className="p-6 border-b border-gray-200">
+          <div className="relative z-10 p-6 border-b border-slate-200 dark:border-slate-700">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
+              <div className="bg-gradient-to-r from-blue-500/10 to-blue-600/10 p-4 rounded-xl border border-blue-500/20 backdrop-blur-sm">
                 <div className="flex items-center gap-2 mb-2">
-                  <BarChart3 className="w-5 h-5 text-blue-600" />
-                  <span className="text-sm font-medium text-blue-800">Total Signals</span>
+                  <BarChart3 className="w-5 h-5 text-blue-400" />
+                  <span className="text-sm font-medium text-blue-300">Total Signals</span>
                 </div>
-                <div className="text-2xl font-bold text-blue-700">{totalSignals}</div>
+                <div className="text-2xl font-bold text-blue-200">{totalSignals}</div>
               </div>
 
-              <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
+              <div className="bg-gradient-to-r from-green-500/10 to-green-600/10 p-4 rounded-xl border border-green-500/20 backdrop-blur-sm">
                 <div className="flex items-center gap-2 mb-2">
-                  <TrendingUp className="w-5 h-5 text-green-600" />
-                  <span className="text-sm font-medium text-green-800">Buy Signals</span>
+                  <TrendingUp className="w-5 h-5 text-green-400" />
+                  <span className="text-sm font-medium text-green-300">Buy Signals</span>
                 </div>
-                <div className="text-2xl font-bold text-green-700">
+                <div className="text-2xl font-bold text-green-200">
                   {filteredSignals.filter(s => s.signal.toLowerCase() === 'buy').length}
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-red-50 to-red-100 p-4 rounded-lg border border-red-200">
+              <div className="bg-gradient-to-r from-red-500/10 to-red-600/10 p-4 rounded-xl border border-red-500/20 backdrop-blur-sm">
                 <div className="flex items-center gap-2 mb-2">
-                  <TrendingDown className="w-5 h-5 text-red-600" />
-                  <span className="text-sm font-medium text-red-800">Sell Signals</span>
+                  <TrendingDown className="w-5 h-5 text-red-400" />
+                  <span className="text-sm font-medium text-red-300">Sell Signals</span>
                 </div>
-                <div className="text-2xl font-bold text-red-700">
+                <div className="text-2xl font-bold text-red-200">
                   {filteredSignals.filter(s => s.signal.toLowerCase() === 'sell').length}
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-4 rounded-lg border border-purple-200">
+              <div className="bg-gradient-to-r from-purple-500/10 to-purple-600/10 p-4 rounded-xl border border-purple-500/20 backdrop-blur-sm">
                 <div className="flex items-center gap-2 mb-2">
-                  <Wallet className="w-5 h-5 text-purple-600" />
-                  <span className="text-sm font-medium text-purple-800">Tokens</span>
+                  <Wallet className="w-5 h-5 text-purple-400" />
+                  <span className="text-sm font-medium text-purple-300">Tokens</span>
                 </div>
-                <div className="text-2xl font-bold text-purple-700">{userTokens.length}</div>
+                <div className="text-2xl font-bold text-purple-200">{userTokens.length}</div>
               </div>
             </div>
           </div>
 
           {/* Filters */}
-          <div className="p-6 bg-gray-50 border-b border-gray-200">
+          <div className="relative z-10 p-6 bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Search */}
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                 <input
                   type="text"
                   placeholder="Search signals..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 />
               </div>
 
@@ -384,7 +413,7 @@ export default function HistoryPage() {
               <select
                 value={selectedToken}
                 onChange={(e) => setSelectedToken(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
               >
                 <option value="all">All Tokens</option>
                 {userTokens.map(token => (
@@ -396,7 +425,7 @@ export default function HistoryPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
               >
                 <option value="timestamp">Sort by Date</option>
                 <option value="confidence">Sort by Confidence</option>
@@ -406,7 +435,7 @@ export default function HistoryPage() {
               {/* Sort Order */}
               <button
                 onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-2"
+                className="px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all duration-200 flex items-center gap-2"
               >
                 {sortOrder === 'desc' ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
                 {sortOrder === 'desc' ? 'Newest First' : 'Oldest First'}
@@ -415,14 +444,14 @@ export default function HistoryPage() {
           </div>
 
           {/* Signals List */}
-          <div className="p-6">
+          <div className="relative z-10 p-6">
             {filteredSignals.length === 0 ? (
               <div className="text-center py-16">
-                <div className="p-4 bg-gray-100 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-                  <History className="w-10 h-10 text-gray-400" />
+                <div className="p-4 bg-slate-800/50 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                  <History className="w-10 h-10 text-slate-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">No Signals Found</h3>
-                <p className="text-gray-500 mb-4">
+                <h3 className="text-xl font-semibold text-slate-200 mb-2">No Signals Found</h3>
+                <p className="text-slate-400 mb-4">
                   {totalSignals === 0 
                     ? 'Generate your first AI trading signal to see it stored on the blockchain'
                     : 'No signals match your current filters'
@@ -438,7 +467,7 @@ export default function HistoryPage() {
                   return (
                     <div
                       key={signalId}
-                      className="bg-gradient-to-r from-white to-gray-50 border border-gray-200 rounded-lg p-6 hover:shadow-md transition-all duration-200"
+                      className="bg-gradient-to-r from-white/90 to-slate-50/90 dark:from-slate-800/90 dark:to-slate-700/90 border border-slate-200 dark:border-slate-600 rounded-xl p-6 hover:shadow-lg transition-all duration-300 backdrop-blur-sm"
                     >
                       {/* Signal Header */}
                       <div className="flex items-center justify-between mb-4">
@@ -448,10 +477,10 @@ export default function HistoryPage() {
                           </div>
                           
                           <div>
-                            <h3 className="text-xl font-bold text-gray-800">
+                            <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
                               {signal.signal.toUpperCase()} {signal.tokenSymbol}
                             </h3>
-                            <div className="flex items-center gap-4 text-sm text-gray-600">
+                            <div className="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
                               <span className="flex items-center gap-1">
                                 <Clock className="w-4 h-4" />
                                 {formatDate(signal.timestamp)}
@@ -460,7 +489,7 @@ export default function HistoryPage() {
                                 <Target className="w-4 h-4" />
                                 {signal.confidence}% confidence
                               </span>
-                              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                              <span className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full">
                                 {signal.signalTimeframe}
                               </span>
                             </div>
@@ -469,60 +498,60 @@ export default function HistoryPage() {
 
                         <button
                           onClick={() => toggleSignalExpansion(signalId)}
-                          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                          className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
                         >
-                          {isExpanded ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                          {isExpanded ? <EyeOff className="w-5 h-5 text-slate-600 dark:text-slate-400" /> : <Eye className="w-5 h-5 text-slate-600 dark:text-slate-400" />}
                         </button>
                       </div>
 
                       {/* Trading Levels - Always Visible */}
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div className="bg-green-50 border border-green-200 p-3 rounded-lg">
+                        <div className="bg-green-500/10 border border-green-500/20 p-3 rounded-xl backdrop-blur-sm">
                           <div className="flex items-center gap-2 mb-1">
-                            <Target className="w-4 h-4 text-green-600" />
-                            <span className="text-sm font-medium text-green-800">TP1</span>
+                            <Target className="w-4 h-4 text-green-400" />
+                            <span className="text-sm font-medium text-green-300">TP1</span>
                           </div>
-                          <p className="text-lg font-bold text-green-700">{formatPrice(signal.tp1)}</p>
+                          <p className="text-lg font-bold text-green-200">{formatPrice(signal.tp1)}</p>
                         </div>
 
-                        <div className="bg-green-50 border border-green-200 p-3 rounded-lg">
+                        <div className="bg-green-500/10 border border-green-500/20 p-3 rounded-xl backdrop-blur-sm">
                           <div className="flex items-center gap-2 mb-1">
-                            <Target className="w-4 h-4 text-green-600" />
-                            <span className="text-sm font-medium text-green-800">TP2</span>
+                            <Target className="w-4 h-4 text-green-400" />
+                            <span className="text-sm font-medium text-green-300">TP2</span>
                           </div>
-                          <p className="text-lg font-bold text-green-700">{formatPrice(signal.tp2)}</p>
+                          <p className="text-lg font-bold text-green-200">{formatPrice(signal.tp2)}</p>
                         </div>
 
-                        <div className="bg-red-50 border border-red-200 p-3 rounded-lg">
+                        <div className="bg-red-500/10 border border-red-500/20 p-3 rounded-xl backdrop-blur-sm">
                           <div className="flex items-center gap-2 mb-1">
-                            <Shield className="w-4 h-4 text-red-600" />
-                            <span className="text-sm font-medium text-red-800">Stop Loss</span>
+                            <Shield className="w-4 h-4 text-red-400" />
+                            <span className="text-sm font-medium text-red-300">Stop Loss</span>
                           </div>
-                          <p className="text-lg font-bold text-red-700">{formatPrice(signal.sl)}</p>
+                          <p className="text-lg font-bold text-red-200">{formatPrice(signal.sl)}</p>
                         </div>
                       </div>
 
                       {/* Expanded Details */}
                       {isExpanded && (
-                        <div className="border-t pt-4 space-y-4">
-                          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-                            <h4 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                        <div className="border-t border-slate-200 dark:border-slate-600 pt-4 space-y-4">
+                          <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-xl backdrop-blur-sm">
+                            <h4 className="font-semibold text-green-300 mb-2 flex items-center gap-2">
                               <BarChart3 className="w-4 h-4" />
                               AI Reasoning
                             </h4>
-                            <p className="text-blue-700 leading-relaxed">{signal.reasoning}</p>
+                            <p className="text-green-200 leading-relaxed">{signal.reasoning}</p>
                           </div>
 
-                          <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
-                            <h4 className="font-semibold text-gray-700 mb-3">Blockchain Details</h4>
+                          <div className="bg-slate-800/50 border border-slate-600 p-4 rounded-xl backdrop-blur-sm">
+                            <h4 className="font-semibold text-slate-200 mb-3">Blockchain Details</h4>
                             <div className="grid grid-cols-2 gap-4 text-sm">
                               <div>
-                                <span className="text-gray-600">Stored on:</span>
-                                <span className="font-medium ml-2">0G Newton Testnet</span>
+                                <span className="text-slate-400">Stored on:</span>
+                                <span className="font-medium ml-2 text-slate-200">0G Newton Testnet</span>
                               </div>
                               <div>
-                                <span className="text-gray-600">Timestamp:</span>
-                                <span className="font-medium ml-2">{Number(signal.timestamp)}</span>
+                                <span className="text-slate-400">Timestamp:</span>
+                                <span className="font-medium ml-2 text-slate-200">{Number(signal.timestamp)}</span>
                               </div>
                             </div>
                           </div>

@@ -173,13 +173,13 @@ export default function TradingSignalDisplay({
 
   // Get USDC address for current chain
   const getUSDCAddress = (chainId: number): string => {
-    const supportedTokens = getSupportedTokens(chainId);
+    const supportedTokens = getSupportedTokens(chainId) as any;
     return supportedTokens.USDC || COMMON_TOKENS[1]?.USDC || '0xA0b86a33E6441c4E79bb18a35651bfBe11B3f2B0';
   };
 
   // Get target token address (simplified - you may want to enhance this)
   const getTargetTokenAddress = (tokenSymbol: string, chainId: number): string => {
-    const supportedTokens = getSupportedTokens(chainId);
+    const supportedTokens = getSupportedTokens(chainId) as any;
     // This is a simplified mapping - you might want to maintain a more comprehensive token registry
     const tokenMap: Record<string, string> = {
       'ETH': supportedTokens.ETH || '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
