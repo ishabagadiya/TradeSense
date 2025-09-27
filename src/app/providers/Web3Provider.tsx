@@ -6,32 +6,43 @@ import type { PrivyClientConfig } from "@privy-io/react-auth";
 import { PrivyProvider } from "@privy-io/react-auth";
 import { WagmiProvider, createConfig } from "@privy-io/wagmi";
 import { http } from "viem";
-import {
-  mainnet,
-  optimism,
-  arbitrum,
-  arbitrumSepolia,
-  optimismSepolia,
-} from "viem/chains";
+import { defineChain } from "viem";
 
 interface Web3ProviderProps {
   children: React.ReactNode;
   autoConnect?: boolean;
 }
 
-// Wagmi configuration
+// Define 0G Testnet chain
+const zeroGTestnet = defineChain({
+  id: 16602,
+  name: '0G Newton Testnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: '0G',
+    symbol: '0G',
+  },
+  rpcUrls: {
+    default: { http: ['https://evmrpc-testnet.0g.ai'] },
+  },
+  blockExplorers: {
+    default: { 
+      name: '0G Newton Testnet Explorer', 
+      url: 'https://chainscan-galileo.0g.ai' 
+    },
+  },
+  testnet: true,
+});
+
+// Wagmi configuration - Only 0G Testnet
 const wagmiConfig = createConfig({
-  chains: [optimism, arbitrum, arbitrumSepolia, optimismSepolia, mainnet],
+  chains: [zeroGTestnet],
   transports: {
-    [mainnet.id]: http(),
-    [optimism.id]: http(),
-    [arbitrum.id]: http(),
-    [arbitrumSepolia.id]: http(),
-    [optimismSepolia.id]: http(),
+    [zeroGTestnet.id]: http('https://evmrpc-testnet.0g.ai'),
   },
 });
 
-// Privy configuration
+// Privy configuration - Only 0G Testnet
 const privyConfig: PrivyClientConfig = {
   embeddedWallets: {
     createOnLogin: "users-without-wallets",
@@ -42,8 +53,11 @@ const privyConfig: PrivyClientConfig = {
   appearance: {
     showWalletLoginFirst: true,
     logo: "",
+    theme: 'light',
+    accentColor: '#3B82F6',
   },
-  defaultChain: optimism,
+  defaultChain: zeroGTestnet,
+  supportedChains: [zeroGTestnet],
 };
 
 const queryClient = new QueryClient();

@@ -8,12 +8,8 @@ const Footer = () => {
   const showComingSoonToast = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     toast.info("Coming Soon!", {
-      position: "top-center",
+      toastId: 'coming-soon-footer', // Prevent duplicate toasts
       autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
     });
   };
 

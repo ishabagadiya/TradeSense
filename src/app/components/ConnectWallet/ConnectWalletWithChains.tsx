@@ -144,7 +144,7 @@ export function ConnectWallet() {
       {!isWalletConnected || !authenticated ? (
         <button
           onClick={handleLogin}
-          className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors flex items-center space-x-2"
+          className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition-colors flex items-center space-x-2"
         >
           <BiSolidWallet className="w-5 h-5" />
           <span className="hidden md:block">Connect Wallet</span>
@@ -167,7 +167,7 @@ export function ConnectWallet() {
                     key={chain.id}
                     onClick={() => handleChainSwitch(chain.id)}
                     className={`w-full flex items-center space-x-2 px-3 py-2 hover:bg-gray-100 ${
-                      chain.id === currentChain.id ? "bg-blue-50" : ""
+                      chain.id === currentChain.id ? "bg-green-50" : ""
                     }`}
                   >
                     <span>{chain.name}</span>
@@ -179,7 +179,7 @@ export function ConnectWallet() {
 
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors flex items-center space-x-2"
+            className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition-colors flex items-center space-x-2"
           >
             <BiSolidWallet className="w-5 h-5" />
             <span className="hidden md:block">
@@ -191,7 +191,7 @@ export function ConnectWallet() {
             <div className="absolute top-full right-0 mt-2 w-64 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
               <div className="p-4">
                 <div className="mb-4">
-                  <p className="text-sm text-gray-500">Connected as:</p>
+                  <p className="text-sm text-gray-500">Connected Address:</p>
                   <p className="font-semibold">
                     {user?.google?.email ||
                       user?.farcaster?.displayName ||
