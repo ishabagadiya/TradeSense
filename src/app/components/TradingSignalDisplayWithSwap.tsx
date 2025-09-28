@@ -192,8 +192,8 @@ export default function TradingSignalDisplayWithSwap({
       return;
     }
 
-    if (signal.signal !== 'buy') {
-      toast.error('Swap is only available for BUY signals');
+    if (signal.signal !== 'buy' && signal.signal !== 'hold') {
+      toast.error('Swap is only available for BUY and HOLD signals');
       return;
     }
 
@@ -237,7 +237,7 @@ export default function TradingSignalDisplayWithSwap({
         approvalTxHash: null
       });
 
-      toast.success(`🎉 Demo swap completed! Would buy ${signal.tokenSymbol} with ${swapAmount} USDC`);
+      toast.success(`🎉 Demo swap completed! Would ${signal.signal === 'buy' ? 'buy' : 'add to position'} ${signal.tokenSymbol} with ${swapAmount} USDC`);
       
     } catch (error: any) {
       console.error('❌ Swap failed:', error);
@@ -417,19 +417,33 @@ export default function TradingSignalDisplayWithSwap({
             <p className="text-blue-700 leading-relaxed">{signal.reasoning}</p>
           </div>
 
-          {/* Swap Section - Only show for BUY signals */}
-          {signal.signal === 'buy' && (
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 p-6 rounded-lg">
+          {/* Swap Section - Show for BUY and HOLD signals */}
+          {(signal.signal === 'buy' || signal.signal === 'hold') && (
+            <div className={`bg-gradient-to-r ${
+              signal.signal === 'buy' 
+                ? 'from-green-50 to-emerald-50 border-green-200' 
+                : 'from-yellow-50 to-amber-50 border-yellow-200'
+            } border p-6 rounded-lg`}>
               <div className="flex items-center gap-2 mb-4">
-                <ArrowRightLeft className="w-5 h-5 text-green-600" />
-                <h4 className="font-semibold text-green-800">Execute Trade with 1inch</h4>
-                <div className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full ml-2">
-                  BUY Signal
+                <ArrowRightLeft className={`w-5 h-5 ${
+                  signal.signal === 'buy' ? 'text-green-600' : 'text-yellow-600'
+                }`} />
+                <h4 className={`font-semibold ${
+                  signal.signal === 'buy' ? 'text-green-800' : 'text-yellow-800'
+                }`}>Execute Trade with 1inch</h4>
+                <div className={`text-xs px-2 py-1 rounded-full ml-2 ${
+                  signal.signal === 'buy' 
+                    ? 'bg-green-100 text-green-700' 
+                    : 'bg-yellow-100 text-yellow-700'
+                }`}>
+                  {signal.signal.toUpperCase()} Signal
                 </div>
               </div>
               
-              <p className="text-green-700 mb-4">
-                🎯 Buy signal detected! You can automatically swap USDC to {signal.tokenSymbol} using 1inch.
+              <p className={`mb-4 ${
+                signal.signal === 'buy' ? 'text-green-700' : 'text-yellow-700'
+              }`}>
+                🎯 {signal.signal === 'buy' ? 'Buy' : 'Hold'} signal detected! You can automatically swap USDC to {signal.tokenSymbol} using 1inch.
               </p>
 
               {!isConnected ? (
