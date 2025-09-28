@@ -75,8 +75,10 @@ export default function InfluencerProfitUniverse() {
       .select<SVGSVGElement, unknown>(svgRef.current)
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
+      .style("transition", "none") // Disable CSS transitions for D3 animations
       .append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+      .attr("transform", `translate(${margin.left}, ${margin.top})`)
+      .style("transition", "none"); // Disable CSS transitions for D3 animations
 
     // Create tooltip
     const tooltip = d3
@@ -223,7 +225,8 @@ export default function InfluencerProfitUniverse() {
       .attr("y", centralNode.y - centralNode.radius * 0.7)
       .attr("width", centralNode.radius * 1.4)
       .attr("height", centralNode.radius * 1.4)
-      .attr("preserveAspectRatio", "xMidYMid meet");
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .style("transition", "none"); // Ensure no CSS transitions interfere
 
     // Create orbits for influencers
     const orbitRadii = d3
@@ -335,7 +338,8 @@ export default function InfluencerProfitUniverse() {
       .attr("stroke", (d) => d.color)
       .attr("stroke-width", 2)
       .attr("stroke-opacity", 0.6)
-      .attr("stroke-dasharray", "5,5");
+      .attr("stroke-dasharray", "5,5")
+      .style("transition", "none"); // Disable CSS transitions for D3 animations
 
     // Draw trail effects for nodes
     const trailsGroup = svg.append("g").attr("class", "trails");
@@ -435,7 +439,8 @@ export default function InfluencerProfitUniverse() {
       .attr("r", (d) => d.radius)
       .attr("fill", (d) => d.fillGradient)
       .attr("stroke", (d) => d.color)
-      .attr("stroke-width", 2);
+      .attr("stroke-width", 2)
+      .style("transition", "none"); // Disable CSS transitions for D3 animations
 
     // Add coin images to nodes
     nodeElements
@@ -445,7 +450,8 @@ export default function InfluencerProfitUniverse() {
       .attr("y", (d) => -d.radius * 0.7)
       .attr("width", (d) => d.radius * 1.4)
       .attr("height", (d) => d.radius * 1.4)
-      .attr("preserveAspectRatio", "xMidYMid meet");
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .style("transition", "none"); // Disable CSS transitions for D3 animations
 
     // Add rank number with improved styling
     // nodeElements
@@ -486,13 +492,16 @@ export default function InfluencerProfitUniverse() {
           .remove();
       });
 
-      // Update node positions
-      nodeElements.attr("transform", (d) => `translate(${d.x},${d.y})`);
+    // Update node positions
+    nodeElements
+      .style("transition", "none") // Disable CSS transitions for D3 animations
+      .attr("transform", (d) => `translate(${d.x},${d.y})`);
 
-      // Update connection lines
-      connectionLines
-        .attr("x2", (d) => d.x)
-        .attr("y2", (d) => d.y);
+    // Update connection lines
+    connectionLines
+      .style("transition", "none") // Disable CSS transitions for D3 animations
+      .attr("x2", (d) => d.x)
+      .attr("y2", (d) => d.y);
 
       // Continue animation
       requestAnimationFrame(animateNodes);
@@ -511,7 +520,6 @@ export default function InfluencerProfitUniverse() {
       .attr("font-weight", "bold")
       .attr("fill", "white")
       .attr("class", "title-glow")
-      .text("Crypto Universe");
 
     // Create title glow effect
     const titleFilter = defs

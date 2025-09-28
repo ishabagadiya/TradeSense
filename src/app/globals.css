@@ -172,17 +172,31 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
+/* Exclude SVG elements from universal transitions to prevent D3 animation conflicts */
+svg * {
+  transition: none !important;
+}
+
 /* Focus styles */
 input:focus,
 button:focus {
   outline: none;
-  ring: 2px solid rgba(34, 197, 94, 0.5);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.5);
 }
 
 /* Global button styles - Green and Rounded */
 button {
   border-radius: 0.75rem; /* rounded-xl */
   transition: all 0.2s ease-in-out;
+}
+
+/* Ensure D3 animations work properly by excluding SVG from global transitions */
+svg {
+  transition: none !important;
+}
+
+svg * {
+  transition: none !important;
 }
 
 /* Override specific button colors to green */

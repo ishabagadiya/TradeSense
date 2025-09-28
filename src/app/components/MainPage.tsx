@@ -1272,10 +1272,19 @@ const MainPage = ({ onTokenSelect, loading = false }: MainPageProps) => {
                               <div className="flex items-center justify-between relative z-10">
                         <div className="flex items-center space-x-4">
                                   <div
-                            className="w-12 h-12 rounded-lg flex items-center justify-center text-lg font-semibold text-white shadow-sm"
-                                    style={{ backgroundColor: token.color }}
+                            className="w-12 h-12 rounded-lg flex items-center justify-center shadow-sm overflow-hidden bg-black"
+                                    // style={{ backgroundColor: token.color }}
                                   >
-                                    {token.icon}
+                                    <img 
+                                      src={token.icon} 
+                                      alt={token.name}
+                                      className="w-full h-full object-cover"
+                                      onError={(e) => {
+                                        const target = e.target as HTMLImageElement;
+                                        target.style.display = 'none';
+                                        target.parentElement!.innerHTML = `<span class="text-lg font-semibold text-white">${token.symbol.charAt(0)}</span>`;
+                                      }}
+                                    />
                                   </div>
                                   <div>
                             <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
